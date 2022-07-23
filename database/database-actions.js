@@ -69,7 +69,7 @@ export function saveItem(item) {
       clone.longSMAType + "-" + clone.evaluationPeriod.toLowerCase();
     clone.lbbType = clone.lbbType + "-" + clone.evaluationPeriod.toLowerCase();
     clone.ubbType = clone.ubbType + "-" + clone.evaluationPeriod.toLowerCase();
-    params.requestParams.ITEM = clone;
+    params.requestParams.item = clone;
 
     params.URI = "/api/member/callService";
 
@@ -113,7 +113,7 @@ export function deleteItem(item) {
     params.requestParams = {};
     params.requestParams.action = "DELETE";
     params.requestParams.service = "TA_CUSTOM_TECHNICAL_INDICATOR_SVC";
-    params.requestParams.ITEMID = item.id;
+    params.requestParams.itemId = item.id;
 
     params.URI = "/api/member/callService";
 
@@ -158,7 +158,7 @@ export function backload(item) {
     params.requestParams = {};
     params.requestParams.action = "BACKLOAD";
     params.requestParams.service = "TA_CACHE_SVC";
-    params.requestParams.ITEMID = item.id;
+    params.requestParams.itemId = item.id;
     params.requestParams.DAYS_TO_BACKLOAD = 50;
 
     params.URI = "/api/member/callService";

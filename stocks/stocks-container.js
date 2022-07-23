@@ -6,7 +6,7 @@ import React, { useEffect } from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import * as stockActions from './stocks-actions';
 import * as ordersActions from '../orders/orders-action';
-import StocksView from "../../memberView/trade/stocks/stocks-view";
+import StocksView from "../../../memberView/trade/stocks/stocks-view";
 
 function StocksContainer() {
 	const stocksState = useSelector((state) => state.stocks);

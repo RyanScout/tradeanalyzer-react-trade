@@ -122,7 +122,7 @@ export function deleteItem(item) {
     params.requestParams = {};
     params.requestParams.service = "TA_TRADE_SVC";
     params.requestParams.action = "DELETE";
-    params.requestParams.ITEMID = item.id;
+    params.requestParams.itemId = item.id;
 
     params.URI = "/api/member/callService";
 
@@ -210,7 +210,7 @@ export function resetItem(item) {
     params.requestParams = {};
     params.requestParams.action = "RESET";
     params.requestParams.service = "TA_TRADE_SVC";
-    params.requestParams.ITEMID = item.id;
+    params.requestParams.itemId = item.id;
 
     params.URI = "/api/member/callService";
 
@@ -258,7 +258,7 @@ export function saveItem(item) {
     params.requestParams = {};
     params.requestParams.action = "SAVE";
     params.requestParams.service = "TA_TRADE_SVC";
-    params.requestParams.ITEM = item;
+    params.requestParams.item = item;
 
     params.URI = "/api/member/callService";
 
@@ -303,7 +303,7 @@ export function historicallyAnalyzeSwingTrade(item) {
     params.requestParams = {};
     params.requestParams.action = "HISTORICALLY_ANALYZE_SWING_TRADE";
     params.requestParams.service = "TA_HISTORICALLY_ANALYZE_SVC";
-    params.requestParams.ITEM = item;
+    params.requestParams.item = item;
 
     params.URI = "/api/member/callService";
 
@@ -338,7 +338,7 @@ export function historicallyAnalyzeDayTrade(item) {
     params.requestParams = {};
     params.requestParams.action = "HISTORICALLY_ANALYZE_DAY_TRADE";
     params.requestParams.service = "TA_HISTORICALLY_ANALYZE_SVC";
-    params.requestParams.ITEM = item;
+    params.requestParams.item = item;
 
     params.URI = "/api/member/callService";
 

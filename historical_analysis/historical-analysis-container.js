@@ -5,8 +5,8 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import * as actions from "./historical-analysis-actions";
-import HistoricalAnalysisView from "../../memberView/trade/historical_analysis/historical-analysis-view";
-import HistoricalDetailView from "../../memberView/trade/historical_analysis/historical-detail-view";
+import HistoricalAnalysisView from "../../../memberView/trade/historical_analysis/historical-analysis-view";
+import HistoricalDetailView from "../../../memberView/trade/historical_analysis/historical-detail-view";
 
 function HistoricalAnalysisContainer() {
   const historicalAnalysisState = useSelector((state) => state.historicalAnalysis);

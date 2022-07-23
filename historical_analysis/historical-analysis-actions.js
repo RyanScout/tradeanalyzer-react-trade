@@ -68,7 +68,7 @@ export function deleteItem(item) {
     params.requestParams = {};
     params.requestParams.service = "TA_HISTORICAL_ANALYSIS_SVC";
     params.requestParams.action = "DELETE";
-    params.requestParams.ITEMID = item.id;
+    params.requestParams.itemId = item.id;
 
     params.URI = "/api/member/callService";
 

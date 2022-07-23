@@ -1,5 +1,5 @@
 import React from 'react';
-import OrdersView from '../../memberView/orders/orders-view'
+import OrdersView from '../../../memberView/trade/orders/orders-view'
 
 export default function OrdersContainer(){
     return(

@@ -6,7 +6,7 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import * as cryptoActions from './crypto-actions';
-import CryptoView from "../../memberView/trade/crypto/crypto-view";
+import CryptoView from "../../../memberView/trade/crypto/crypto-view";
 
 function CryptoContainer() {
 	const cryptoState = useSelector((state) => state.crypto);

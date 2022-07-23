@@ -6,11 +6,11 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import * as tradeActions from "./trade-actions";
-import TradeView from "../../memberView/trade/trade/trade-view";
-import TradeDetailView from "../../memberView/trade/trade/trade-detail-view";
-import TradeModifyView from "../../memberView/trade/trade/trade-modify-view";
-import HistoricalAnalysisView from "../../memberView/trade/trade/trade-historical-analysis-view";
-import TradeGraphView from "../../memberView/trade/trade/trade-graph-view";
+import TradeView from "../../../memberView/trade/trade/trade-view";
+import TradeDetailView from "../../../memberView/trade/trade/trade-detail-view";
+import TradeModifyView from "../../../memberView/trade/trade/trade-modify-view";
+import HistoricalAnalysisView from "../../../memberView/trade/trade/trade-historical-analysis-view";
+import TradeGraphView from "../../../memberView/trade/trade/trade-graph-view";
 
 function TradeContainer() {
   const tradeState = useSelector((state) => state.trade);
