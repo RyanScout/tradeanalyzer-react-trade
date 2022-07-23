@@ -34,13 +34,13 @@ export default function databaseReducer(state = {}, action) {
     case "DATABASE_LIST": {
       if (action.responseJson != null && action.responseJson.params != null) {
         let itemCount = {};
-        if (action.responseJson.params.ITEMCOUNT != null) {
-          itemCount = action.responseJson.params.ITEMCOUNT;
+        if (action.responseJson.params.itemCount != null) {
+          itemCount = action.responseJson.params.itemCount;
         }
 
         let items = [];
-        if (action.responseJson.params.ITEMS != null) {
-          items = action.responseJson.params.ITEMS;
+        if (action.responseJson.params.items != null) {
+          items = action.responseJson.params.items;
           items.forEach((item) => {
             if (item.symbols != null) {
               for (let i = 0; i < item.symbols.length; i++) {

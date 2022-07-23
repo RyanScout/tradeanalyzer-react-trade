@@ -64,8 +64,8 @@
 		case 'HISTORICAL_ANALYSIS_SAVE_ITEM': {
 			if (action.responseJson != null && action.responseJson.params != null) {
 				let item = {};
-  				if (action.responseJson.params.ITEM != null) {
-    				item = action.responseJson.params.ITEM;
+  				if (action.responseJson.params.item != null) {
+    				item = action.responseJson.params.item;
   				}
 				return Object.assign({}, state, {
 					item: item,

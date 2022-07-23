@@ -57,8 +57,8 @@ export default function tradeReducer(state = {}, action) {
     case "TRADE_CUSTOM_TECHNICAL_INDICATORS": {
       if (action.responseJson != null && action.responseJson.params != null) {
         let customTechnicalIndicators = {};
-        if (action.responseJson.params.ITEMS != null) {
-          customTechnicalIndicators = action.responseJson.params.ITEMS;
+        if (action.responseJson.params.items != null) {
+          customTechnicalIndicators = action.responseJson.params.items;
         }
         return Object.assign({}, state, {
           customTechnicalIndicators: customTechnicalIndicators,
@@ -149,8 +149,8 @@ export default function tradeReducer(state = {}, action) {
     case "TRADE_SAVE_ITEM": {
       if (action.responseJson != null && action.responseJson.params != null) {
         let item = {};
-        if (action.responseJson.params.ITEM != null) {
-          item = action.responseJson.params.ITEM;
+        if (action.responseJson.params.item != null) {
+          item = action.responseJson.params.item;
         }
         return Object.assign({}, state, {
           item: item,
