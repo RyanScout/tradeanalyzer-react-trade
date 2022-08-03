@@ -1,15 +1,43 @@
+import { zhCN } from "date-fns/locale";
 import { bindActionCreators } from "redux";
 
-export default function databaseReducer(state = {}, action) {
-  let defaultItemState = {
-    evaluationPeriod: "DAY",
-    shortSMAType: "15",
-    longSMAType: "50",
-    lbbType: "20",
-    ubbType: "20",
-    standardDeviations: "2",
-  };
+type DefaultItemState = {
+  item?: any;
+  evaluationPeriod?: string;
+  shortSMAEvaluationDuration?: number;
+  longSMAEvaluationDuration?: number;
+  lbbEvaluationDuration?: number;
+  ubbEvaluationDuration?: number;
+  standardDeviations?: number;
+  view?: string;
+  items?: any[];
+};
 
+const defaultItemState: DefaultItemState = {
+  item: {},
+  evaluationPeriod: "DAY",
+  shortSMAEvaluationDuration: 15,
+  longSMAEvaluationDuration: 50,
+  lbbEvaluationDuration: 20,
+  ubbEvaluationDuration: 20,
+  standardDeviations: 2,
+};
+
+type DefaultAction = {
+  params?: any;
+  type?: any;
+  responseJson?: any;
+  action?: any;
+};
+
+const defaultAction: DefaultAction = {
+  params: {},
+};
+
+export default function databaseReducer(
+  state: DefaultItemState = defaultItemState,
+  action: DefaultAction = defaultAction
+) {
   switch (action.type) {
     case "DATABASE_BACKLOAD": {
       return state;
@@ -38,7 +66,7 @@ export default function databaseReducer(state = {}, action) {
           itemCount = action.responseJson.params.itemCount;
         }
 
-        let items = [];
+        let items: any[] = [];
         if (action.responseJson.params.items != null) {
           items = action.responseJson.params.items;
           items.forEach((item) => {
@@ -79,63 +107,6 @@ export default function databaseReducer(state = {}, action) {
           itemCount: itemCount,
           items: items,
           item: {},
-          view: "",
-        });
-      } else {
-        return state;
-      }
-    }
-
-    case "DATABASE_CACHE": {
-      if (action.responseJson != null && action.responseJson.params != null) {
-        let cache = new Object();
-        let goldenCross = new Object();
-        let lowerBollingerBand = new Object();
-        let upperBollingerBand = new Object();
-        if (state.cache != null) {
-          cache = state.cache;
-          if (state.cache.goldenCross != null) {
-            goldenCross = state.cache.goldenCross;
-          }
-          if (state.cache.lowerBollingerBand != null) {
-            lowerBollingerBand = state.cache.lowerBollingerBand;
-          }
-          if (state.cache.upperBollingerBand != null) {
-            upperBollingerBand = state.cache.upperBollingerBand;
-          }
-        }
-
-        if (action.responseJson.params.GOLDEN_CROSS_DAY != null) {
-          goldenCross["day"] = action.responseJson.params.GOLDEN_CROSS_DAY;
-        }
-        if (action.responseJson.params.GOLDEN_CROSS_MINUTE != null) {
-          goldenCross["minute"] =
-            action.responseJson.params.GOLDEN_CROSS_MINUTE;
-        }
-        cache["goldenCross"] = goldenCross;
-
-        if (action.responseJson.params.LOWER_BOLLINGER_BAND_DAY != null) {
-          lowerBollingerBand["day"] =
-            action.responseJson.params.LOWER_BOLLINGER_BAND_DAY;
-        }
-        if (action.responseJson.params.LOWER_BOLLINGER_BAND_MINUTE != null) {
-          lowerBollingerBand["minute"] =
-            action.responseJson.params.LOWER_BOLLINGER_BAND_MINUTE;
-        }
-        cache["lowerBollingerBand"] = lowerBollingerBand;
-
-        if (action.responseJson.params.UPPER_BOLLINGER_BAND_DAY != null) {
-          upperBollingerBand["day"] =
-            action.responseJson.params.UPPER_BOLLINGER_BAND_DAY;
-        }
-        if (action.responseJson.params.UPPER_BOLLINGER_BAND_MINUTE != null) {
-          upperBollingerBand["minute"] =
-            action.responseJson.params.UPPER_BOLLINGER_BAND_MINUTE;
-        }
-        cache["upperBollingerBand"] = upperBollingerBand;
-
-        return Object.assign({}, state, {
-          cache: cache,
           view: "",
         });
       } else {
@@ -188,9 +159,10 @@ export default function databaseReducer(state = {}, action) {
       }
     }
     case "DATABASE_CANCEL_ITEM": {
-      let clone = Object.assign({}, state);
-      clone.view = "";
-      clone.item = {};
+      const clone = Object.assign({}, state, {
+        item: {},
+        view: "",
+      });
       return clone;
     }
 

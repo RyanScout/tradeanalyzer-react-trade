@@ -1,6 +1,6 @@
 import React from "react";
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import {useDispatch, useSelector } from "react-redux";
 import * as actions from "./database-actions";
 import DatabaseDetailView from "../../../memberView/trade/database/database-detail-view";
 import DatabaseModifyView from "../../../memberView/trade/database/database-modify-view";
@@ -8,14 +8,14 @@ import DatabaseSymbolView from "../../../memberView/trade/database/database-symb
 import DatabaseView from "../../../memberView/trade/database/database-view";
 
 function DatabaseContainer() {
-  const databaseState = useSelector((state) => state.database);
+  const databaseState = useSelector((state: any) => state.database);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(actions.list());
   }, []);
 
-  function onOption(code, item) {
+  function onOption(code: string, item?:any) {
     switch (code) {
       case "SAVE": {
         onSave();
