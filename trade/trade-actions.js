@@ -92,6 +92,21 @@ export function cancelItem() {
   };
 }
 
+export function selectView(field) {
+  return function (dispatch) {
+    dispatch({ type: "TRADE_SELECT_VIEW", action: field });
+  };
+}
+
+export function selectInputChange(field, value) {
+  return function (dispatch) {
+    let params = {};
+    params.field = field;
+    params.value = value;
+    dispatch({ type: "TRADE_SELECT_INPUT_CHANGE", params });
+  };
+}
+
 export function modifyItem(item) {
   return function (dispatch) {
     dispatch({ type: "TRADE_MODIFY_ITEM", action: item });

@@ -11,6 +11,8 @@ import TradeDetailView from "../../../memberView/trade/trade/trade-detail-view";
 import TradeModifyView from "../../../memberView/trade/trade/trade-modify-view";
 import HistoricalAnalysisView from "../../../memberView/trade/trade/trade-historical-analysis-view";
 import TradeGraphView from "../../../memberView/trade/trade/trade-graph-view";
+import DatabaseView from "../../../memberView/trade/database/database-view";
+import TradeSelectView from "../../../memberView/trade/trade/trade-select-view";
 
 function TradeContainer() {
   const tradeState = useSelector((state) => state.trade);
@@ -56,9 +58,13 @@ function TradeContainer() {
         dispatch(tradeActions.tradeDetailView(item));
         return true;
       }
-      case "TRADE_GRAPH_VIEW":{
+      case "TRADE_GRAPH_VIEW": {
         dispatch(tradeActions.graphItem(item));
         dispatch(tradeActions.tradeGraphView(item));
+        return true;
+      }
+      case "SELECT_VIEW": {
+        dispatch(tradeActions.selectView(item));
         return true;
       }
       case "CANCEL": {
@@ -86,7 +92,7 @@ function TradeContainer() {
     }
   }
 
-  const AutoComplete = (suggestions, field ) => {
+  const renderAutoComplete = (suggestions, field) => {
     const [filteredSuggestions, setFilteredSuggestions] = useState([]);
     const [activeSuggestionIndex, setActiveSuggestionIndex] = useState(0);
     const [showSuggestions, setShowSuggestions] = useState(false);
@@ -105,7 +111,7 @@ function TradeContainer() {
       );
 
       setInput(e.target.value);
-      manuallyInputChange(field,e.target.value);
+      manuallyInputChange(field, e.target.value);
       setFilteredSuggestions(unLinked);
       setActiveSuggestionIndex(0);
       setShowSuggestions(true);
@@ -123,7 +129,7 @@ function TradeContainer() {
 
       setFilteredSuggestions([]);
       setInput(s);
-      manuallyInputChange(field,s)
+      manuallyInputChange(field, s);
       setActiveSuggestionIndex(0);
       setShowSuggestions(false);
     };
@@ -170,7 +176,7 @@ function TradeContainer() {
           onKeyDown={onKeyDown}
           value={input}
         />
-        {showSuggestions && input && <SuggestionsListComponent /> }
+        {showSuggestions && input && <SuggestionsListComponent />}
       </>
     );
   };
@@ -196,60 +202,74 @@ function TradeContainer() {
     dispatch(tradeActions.inputChange(field, value));
   }
 
-  if (
-    tradeState != null &&
-    tradeState.view != "MODIFY" &&
-    tradeState.view != "ADD" &&
-    tradeState.view != "HISTORICAL_ANALYSIS" &&
-    tradeState.view != "TRADE_DETAIL" &&
-    tradeState.view != "TRADE_GRAPH"
-  ) {
-    return (
-      <TradeView
-        itemState={tradeState}
-        appPrefs={appPrefs}
-        onOption={onOption}
-      />
-    );
-  } else if (
-    tradeState != null &&
-    (tradeState.view == "ADD" || tradeState.view == "MODIFY")
-  ) {
-    return (
-      <TradeModifyView
-        itemState={tradeState}
-        appPrefs={appPrefs}
-        inputChange={inputChange}
-        onOption={onOption}
-        AutoComplete={AutoComplete}
-      />
-    );
-  } else if (tradeState != null && tradeState.view == "HISTORICAL_ANALYSIS") {
-    return (
-      <HistoricalAnalysisView
-        itemState={tradeState}
-        appPrefs={appPrefs}
-        inputChange={inputChange}
-        onOption={onOption}
-      />
-    );
-  } else if (tradeState != null && tradeState.view == "TRADE_DETAIL") {
-    return (
-      <TradeDetailView
-        itemState={tradeState}
-        appPrefs={appPrefs}
-        inputChange={inputChange}
-        onOption={onOption}
-      />
-    );
-  } else if (tradeState != null && tradeState.view == "TRADE_GRAPH"){
-    return (<TradeGraphView
-    itemState = {tradeState}
-    appPrefs = {appPrefs}
-    onOption = {onOption}/>
-    );
-  }else{
+  function selectInputChange(field, value) {
+    dispatch(tradeActions.selectInputChange(field, value));
+  }
+
+  if (tradeState === null) {
     return <div> Loading... </div>;
+  }
+
+  switch (tradeState.view) {
+    case "SELECT":
+      return (
+        <TradeSelectView
+          itemState={tradeState}
+          selectInputChange={selectInputChange}
+        />
+      );
+    case "ADD":
+      return (
+        <TradeModifyView
+          itemState={tradeState}
+          appPrefs={appPrefs}
+          inputChange={inputChange}
+          onOption={onOption}
+        />
+      );
+    case "MODIFY":
+      return (
+        <TradeModifyView
+          itemState={tradeState}
+          appPrefs={appPrefs}
+          inputChange={inputChange}
+          onOption={onOption}
+        />
+      );
+    case "HISTORICAL_ANALYSIS":
+      return (
+        <HistoricalAnalysisView
+          itemState={tradeState}
+          appPrefs={appPrefs}
+          inputChange={inputChange}
+          onOption={onOption}
+        />
+      );
+    case "TRADE_DETAIL":
+      return (
+        <TradeDetailView
+          itemState={tradeState}
+          appPrefs={appPrefs}
+          inputChange={inputChange}
+          onOption={onOption}
+        />
+      );
+    case "TRADE_GRAPH":
+      return (
+        <TradeGraphView
+          itemState={tradeState}
+          appPrefs={appPrefs}
+          onOption={onOption}
+        />
+      );
+    default:
+      return (
+        <TradeView
+          itemState={tradeState}
+          appPrefs={appPrefs}
+          onOption={onOption}
+        />
+      );
   }
 }
 

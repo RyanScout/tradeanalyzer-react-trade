@@ -10,6 +10,8 @@ export default function tradeReducer(state = {}, action) {
     currencyType: "Dollars",
     profitLimitType: "Profit Limit Price",
     trailingStopType: "Trailing Stop Price",
+    buyCondition: "",
+    sellCondition: "",
     status: "Not Running",
   };
 
@@ -128,6 +130,39 @@ export default function tradeReducer(state = {}, action) {
         return Object.assign({}, state, {
           item: item,
           view: "TRADE_GRAPH",
+        });
+      } else {
+        return state;
+      }
+    }
+
+    case "TRADE_SELECT_VIEW": {
+      if (action != null) {
+        let field = {};
+        if (action.action != null) {
+          field = action.action;
+        }
+        return Object.assign({}, state, {
+          field: field,
+          view: "SELECT",
+        });
+      } else {
+        return state;
+      }
+    }
+
+    case "TRADE_SELECT_INPUT_CHANGE": {
+      if (action.params != null) {
+        let item = {};
+        if (state.item == null) {
+          item[action.params.field] = action.params.value;
+        } else {
+          item = Object.assign({}, state.item);
+          item[action.params.field] = action.params.value;
+        }
+        return Object.assign({}, state, {
+          item: item,
+          view: "MODIFY",
         });
       } else {
         return state;
