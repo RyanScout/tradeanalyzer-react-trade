@@ -13,7 +13,6 @@ type DefaultItemState = {
   items?: any[];
 };
 
-
 const defaultItemState: DefaultItemState = {
   item: {},
   evaluationPeriod: "DAY",
@@ -36,11 +35,9 @@ const defaultAction: DefaultAction = {
 };
 
 export default function databaseReducer(
-  state: DefaultItemState = defaultItemState,
+  state: any = {},
   action: DefaultAction = defaultAction
 ) {
-
-
   switch (action.type) {
     case "DATABASE_BACKLOAD": {
       return state;

@@ -10,8 +10,8 @@ export default function tradeReducer(state = {}, action) {
     currencyType: "Dollars",
     profitLimitType: "Profit Limit Price",
     trailingStopType: "Trailing Stop Price",
-    buyCondition: "",
-    sellCondition: "",
+    rawBuyCondition: "",
+    rawSellCondition: "",
     status: "Not Running",
   };
 
@@ -41,8 +41,8 @@ export default function tradeReducer(state = {}, action) {
         }
 
         let items = {};
-        if (action.responseJson.params.TRADES != null) {
-          items = action.responseJson.params.TRADES;
+        if (action.responseJson.params.items != null) {
+          items = action.responseJson.params.items;
         }
 
         return Object.assign({}, state, {
