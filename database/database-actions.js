@@ -159,7 +159,8 @@ export function backload(item) {
     params.requestParams.action = "BACKLOAD";
     params.requestParams.service = "TA_CACHE_SVC";
     params.requestParams.itemId = item.id;
-    params.requestParams.DAYS_TO_BACKLOAD = 50;
+    params.requestParams.startTime =
+      Math.round(new Date().getTime() / 1000) - 60 * 60 * 24 * 50;
 
     params.URI = "/api/member/callService";
 
@@ -189,11 +190,8 @@ export function backload(item) {
           responseJson.status == "SUCCESS"
         ) {
           dispatch(list());
-        } else if (
-          responseJson != null &&
-          responseJson.status != null &&
-          responseJson.status == "ACTIONFAILED"
-        ) {
+        } else if (responseJson != null && responseJson.status != null) {
+          alert(responseJson.status);
           dispatch({ type: "SHOW_STATUS", error: responseJson.errors });
         }
       })

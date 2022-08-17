@@ -4,6 +4,7 @@ import { bindActionCreators } from "redux";
  *
  */
 export default function tradeReducer(state = {}, action) {
+  const startOf2022 = 1641016800;
   let defaultItemState = {
     evaluationPeriod: "DAY",
     orderType: "Market",
@@ -12,6 +13,8 @@ export default function tradeReducer(state = {}, action) {
     trailingStopType: "Trailing Stop Price",
     rawBuyCondition: "",
     rawSellCondition: "",
+    startTime: startOf2022,
+    endTime: startOf2022,
     status: "Not Running",
   };
 
@@ -94,9 +97,9 @@ export default function tradeReducer(state = {}, action) {
 
     case "TRADE_HISTORICAL_ANALYSIS_VIEW": {
       if (action != null) {
-        let item = {};
+        let item = defaultItemState;
         if (action.action != null) {
-          item = action.action;
+          item = Object.assign(defaultItemState, action.action);
         }
         return Object.assign({}, state, {
           item: item,

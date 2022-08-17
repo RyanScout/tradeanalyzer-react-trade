@@ -316,8 +316,8 @@ export function historicallyAnalyzeSwingTrade(item) {
   return function (dispatch) {
     let params = {};
     params.requestParams = {};
-    params.requestParams.action = "HISTORICALLY_ANALYZE_SWING_TRADE";
-    params.requestParams.service = "TA_HISTORICALLY_ANALYZE_SVC";
+    params.requestParams.action = "HISTORICAL_ANALYSIS";
+    params.requestParams.service = "TA_TRADE_SVC";
     params.requestParams.item = item;
 
     params.URI = "/api/member/callService";
@@ -342,7 +342,16 @@ export function historicallyAnalyzeSwingTrade(item) {
         }
       })
       .then((responseJson) => {
-        dispatch(list());
+        if (
+          responseJson != null &&
+          responseJson.status != null &&
+          responseJson.status == "SUCCESS"
+        ) {
+          dispatch(list());
+        } else if (responseJson != null && responseJson.status != null) {
+          alert(responseJson.status);
+          dispatch({ type: "SHOW_STATUS", error: responseJson.errors });
+        }
       })
       .catch(function (error) {});
   };

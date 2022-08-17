@@ -43,7 +43,7 @@ function TradeContainer() {
         return true;
       }
       case "HISTORICALLY_ANALYZE_DAY_TRADE": {
-        historicallyAnalyzeDayTrade();
+        dispatch(tradeActions.historicallyAnalyzeDayTrade(item));
         return true;
       }
       case "HISTORICALLY_ANALYZE_SWING_TRADE": {
@@ -71,12 +71,6 @@ function TradeContainer() {
         dispatch(tradeActions.cancelItem());
         return true;
       }
-    }
-  }
-
-  function historicallyAnalyzeDayTrade() {
-    if (tradeState.item != null) {
-      dispatch(tradeActions.historicallyAnalyzeDayTrade(tradeState.item));
     }
   }
 
