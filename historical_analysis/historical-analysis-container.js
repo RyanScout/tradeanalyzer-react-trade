@@ -4,61 +4,75 @@
 "use-strict";
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import * as actions from "./historical-analysis-actions";
+import * as historicalAnalysisActions from "./historical-analysis-actions";
 import HistoricalAnalysisView from "../../../memberView/trade/historical_analysis/historical-analysis-view";
-import HistoricalDetailView from "../../../memberView/trade/historical_analysis/historical-detail-view";
+import HistoricalDetailView from "../../../memberView/trade/historical_analysis/historical-analysis-detail-view";
+import HistoricalAnalysisGraphView from "../../../memberView/trade/historical_analysis/historical-analysis-graph-view";
 
 function HistoricalAnalysisContainer() {
-  const historicalAnalysisState = useSelector((state) => state.historicalAnalysis);
+  const historicalAnalysisState = useSelector(
+    (state) => state.historicalAnalysis
+  );
   const appPrefs = useSelector((state) => state.appPrefs);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(actions.list());
+    dispatch(historicalAnalysisActions.list());
   }, []);
 
   function onOption(code, item) {
     switch (code) {
       case "DELETE": {
-        dispatch(actions.deleteItem(item));
+        dispatch(historicalAnalysisActions.deleteItem(item));
         return true;
       }
-      case "HISTORICAL_DETAIL_VIEW":{
-        dispatch(actions.historicalDetailView(item));
-        return true
+      case "HISTORICAL_ANALYSIS_DETAIL_VIEW": {
+        dispatch(historicalAnalysisActions.historicalAnalysisDetailView(item));
+        return true;
+      }
+      case "HISTORICAL_ANALYSIS_GRAPH_VIEW": {
+        dispatch(historicalAnalysisActions.historicalAnalysisGraphView(item));
+        return true;
       }
       case "CANCEL": {
-        dispatch(actions.cancelItem(item));
+        dispatch(historicalAnalysisActions.cancelItem(item));
+        return true;
       }
     }
   }
 
-  
   if (
-    historicalAnalysisState != null &&
-    historicalAnalysisState.view != "HISTORICAL_DETAIL"
+    historicalAnalysisState === null ||
+    historicalAnalysisState === undefined
   ) {
-    return (
-      <HistoricalAnalysisView
-        itemState={historicalAnalysisState}
-        appPrefs={appPrefs}
-        onOption={onOption}
-      />
-    );
-  } else if(
-    historicalAnalysisState != null &&
-    historicalAnalysisState.view == "HISTORICAL_DETAIL"
-  ){
-    return (
-      <HistoricalDetailView
-        itemState={historicalAnalysisState}
-        appPrefs={appPrefs}
-        onOption={onOption}
-      />
-    );
-  }
-  else {
     return <div> Loading... </div>;
+  }
+
+  switch (historicalAnalysisState.view) {
+    case "HISTORICAL_ANALYSIS_DETAIL":
+      return (
+        <HistoricalDetailView
+          itemState={historicalAnalysisState}
+          appPrefs={appPrefs}
+          onOption={onOption}
+        />
+      );
+    case "HISTORICAL_ANALYSIS_GRAPH":
+      return (
+        <HistoricalAnalysisGraphView
+          itemState={historicalAnalysisState}
+          appPrefs={appPrefs}
+          onOption={onOption}
+        />
+      );
+    default:
+      return (
+        <HistoricalAnalysisView
+          itemState={historicalAnalysisState}
+          appPrefs={appPrefs}
+          onOption={onOption}
+        />
+      );
   }
 }
 

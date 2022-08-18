@@ -59,7 +59,6 @@ function TradeContainer() {
         return true;
       }
       case "TRADE_GRAPH_VIEW": {
-        dispatch(tradeActions.graphItem(item));
         dispatch(tradeActions.tradeGraphView(item));
         return true;
       }
@@ -200,7 +199,7 @@ function TradeContainer() {
     dispatch(tradeActions.selectInputChange(field, value));
   }
 
-  if (tradeState === null) {
+  if (tradeState === null || tradeState === undefined) {
     return <div> Loading... </div>;
   }
 

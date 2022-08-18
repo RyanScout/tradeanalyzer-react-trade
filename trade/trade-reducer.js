@@ -81,9 +81,9 @@ export default function tradeReducer(state = {}, action) {
     }
 
     case "TRADE_MODIFY_ITEM": {
-      if (action != null) {
+      if (action != null || action != undefined) {
         let item = defaultItemState;
-        if (action.action != null) {
+        if (action.action != null && action.action != undefined) {
           item = Object.assign(defaultItemState, action.action);
         }
         return Object.assign({}, state, {
@@ -118,6 +118,40 @@ export default function tradeReducer(state = {}, action) {
         return Object.assign({}, state, {
           item: item,
           view: "TRADE_DETAIL",
+        });
+      } else {
+        return state;
+      }
+    }
+
+    case "INITIALIZE_TRADE_DETAILS": {
+      if (action.action.params != null) {
+        let item = {};
+        if (state.item == null) {
+          item["details"] = action.actions.params.DETAILS;
+        } else {
+          item = Object.assign({}, state.item);
+          item["details"] = action.action.params.DETAILS;
+        }
+        return Object.assign({}, state, {
+          item: item,
+        });
+      } else {
+        return state;
+      }
+    }
+
+    case "INITIALIZE_TRADE_SYMBOL_DATA": {
+      if (action.action.params != null) {
+        let item = {};
+        if (state.item == null) {
+          item["symbolData"] = action.actions.params.SYMBOL_DATA;
+        } else {
+          item = Object.assign({}, state.item);
+          item["symbolData"] = action.action.params.SYMBOL_DATA;
+        }
+        return Object.assign({}, state, {
+          item: item,
         });
       } else {
         return state;

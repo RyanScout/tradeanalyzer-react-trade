@@ -14,7 +14,6 @@ type DefaultItemState = {
 };
 
 const defaultItemState: DefaultItemState = {
-  item: {},
   evaluationPeriod: "DAY",
   shortSMAEvaluationDuration: 15,
   longSMAEvaluationDuration: 50,
@@ -113,8 +112,8 @@ export default function databaseReducer(
 
     case "DATABASE_MODIFY_VIEW": {
       if (action != null) {
-        let item = defaultItemState;
-        if (action.action != null) {
+        let item = Object.assign({}, defaultItemState);
+        if (action.action != null && action.action != undefined) {
           item = Object.assign(item, action.action);
         }
         return Object.assign({}, state, {
