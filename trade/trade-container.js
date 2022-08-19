@@ -21,7 +21,6 @@ function TradeContainer() {
 
   useEffect(() => {
     dispatch(tradeActions.list());
-    dispatch(tradeActions.getCustomTechnicalIndicators());
   }, []);
 
   function onOption(code, item) {
@@ -64,6 +63,7 @@ function TradeContainer() {
       }
       case "SELECT_VIEW": {
         dispatch(tradeActions.selectView(item));
+        dispatch(tradeActions.getCustomTechnicalIndicators());
         return true;
       }
       case "CANCEL": {
