@@ -77,7 +77,11 @@ export function getCustomTechnicalIndicators() {
         }
       })
       .then((responseJson) => {
-        dispatch({ type: "TRADE_CUSTOM_TECHNICAL_INDICATORS", responseJson });
+        const customTechnicalIndicators = responseJson.params.items;
+        dispatch({
+          type: "TRADE_CUSTOM_TECHNICAL_INDICATORS",
+          payload: customTechnicalIndicators,
+        });
         if (info != null) {
           dispatch({ type: "SHOW_STATUS", info: info });
         }

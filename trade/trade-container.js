@@ -209,6 +209,7 @@ function TradeContainer() {
         <TradeSelectView
           itemState={tradeState}
           selectInputChange={selectInputChange}
+          onOption={onOption}
         />
       );
     case "ADD":

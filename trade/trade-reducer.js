@@ -5,6 +5,7 @@ import { bindActionCreators } from "redux";
  */
 export default function tradeReducer(state = {}, action) {
   const startOf2022 = 1641016800;
+
   let defaultItemState = {
     evaluationPeriod: "DAY",
     orderType: "Market",
@@ -60,17 +61,13 @@ export default function tradeReducer(state = {}, action) {
     }
 
     case "TRADE_CUSTOM_TECHNICAL_INDICATORS": {
-      if (action.responseJson != null && action.responseJson.params != null) {
-        let customTechnicalIndicators = {};
-        if (action.responseJson.params.items != null) {
-          customTechnicalIndicators = action.responseJson.params.items;
-        }
-        return Object.assign({}, state, {
-          customTechnicalIndicators: customTechnicalIndicators,
-        });
-      } else {
-        return state;
-      }
+      return {
+        ...state,
+        item: {
+          ...state.item,
+          customTechnicalIndicators: action.payload,
+        },
+      };
     }
 
     case "TRADE_CANCEL_ITEM": {
