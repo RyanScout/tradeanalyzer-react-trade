@@ -1,11 +1,12 @@
 import React from "react";
 import { useEffect } from "react";
-import {useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import * as actions from "./database-actions";
 import DatabaseDetailView from "../../../memberView/trade/database/database-detail-view";
 import DatabaseModifyView from "../../../memberView/trade/database/database-modify-view";
-import DatabaseSymbolView from "../../../memberView/trade/database/database-symbol-view";
+import DatabaseSymbolView from "../../../memberView/trade/database/database-detail-view";
 import DatabaseView from "../../../memberView/trade/database/database-view";
+import DatabaseGraphView from "../../../memberView/trade/database/database-graph-view";
 
 function DatabaseContainer() {
   const databaseState = useSelector((state: any) => state.database);
@@ -15,7 +16,7 @@ function DatabaseContainer() {
     dispatch(actions.list());
   }, []);
 
-  function onOption(code: string, item?:any) {
+  function onOption(code: string, item?: any) {
     switch (code) {
       case "SAVE": {
         onSave();
@@ -33,8 +34,8 @@ function DatabaseContainer() {
       case "GET_SYMBOL":
         dispatch(actions.getSymbol(item.tradeSignal, item.symbol));
         return true;
-      case "SYMBOL_VIEW":
-        dispatch(actions.databaseSymbolView(item));
+      case "GRAPH_VIEW":
+        dispatch(actions.databaseGraphView(item));
         return true;
       case "DETAIL_VIEW":
         dispatch(actions.databaseDetailView(item));
@@ -71,42 +72,45 @@ function DatabaseContainer() {
     dispatch(actions.inputChange(field, value));
   }
 
-  if (
-    databaseState != null &&
-    databaseState.view != "DATABASE_DETAIL" &&
-    databaseState.view != "DATABASE_MODIFY" &&
-    databaseState.view != "DATABASE_SYMBOL"
-  ) {
-    return (
-      <DatabaseView
-        onOption={onOption}
-        itemState={databaseState}
-        inputChange={inputChange}
-      />
-    );
-  } else if (databaseState.view == "DATABASE_MODIFY") {
-    return (
-      <DatabaseModifyView
-        onOption={onOption}
-        itemState={databaseState}
-        inputChange={inputChange}
-        manuallyInputChange={manuallyInputChange}
-      />
-    );
-  } else if (databaseState.view == "DATABASE_SYMBOL") {
-    return (
-      <DatabaseSymbolView
-        onOption={onOption}
-        itemState={databaseState}
-        inputChange={inputChange}
-      />
-    );
-  } else if (databaseState.view == "DATABASE_DETAIL") {
-    return <DatabaseDetailView onOption={onOption} itemState={databaseState} />;
-  } else {
+  if (databaseState === null || databaseState === undefined) {
     return <div> Loading... </div>;
+  }
+
+  switch (databaseState.view) {
+    case "DATABASE_MODIFY": {
+      return (
+        <DatabaseModifyView
+          onOption={onOption}
+          itemState={databaseState}
+          inputChange={inputChange}
+          manuallyInputChange={manuallyInputChange}
+        />
+      );
+    }
+    case "DATABASE_DETAIL": {
+      return (
+        <DatabaseDetailView
+          onOption={onOption}
+          itemState={databaseState}
+          inputChange={inputChange}
+        />
+      );
+    }
+    case "DATABASE_GRAPH": {
+      return (
+        <DatabaseGraphView onOption={onOption} itemState={databaseState} />
+      );
+    }
+    default: {
+      return (
+        <DatabaseView
+          onOption={onOption}
+          itemState={databaseState}
+          inputChange={inputChange}
+        />
+      );
+    }
   }
 }
 
 export default DatabaseContainer;
-

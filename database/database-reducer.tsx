@@ -27,6 +27,7 @@ type DefaultAction = {
   type?: any;
   responseJson?: any;
   action?: any;
+  payload?: any;
 };
 
 const defaultAction: DefaultAction = {
@@ -95,7 +96,7 @@ export default function databaseReducer(
       }
     }
 
-    case "DATABASE_SYMBOL_VIEW": {
+    case "DATABASE_GRAPH_VIEW": {
       if (action != null) {
         let item = {};
         if (action.action != null) {
@@ -103,7 +104,7 @@ export default function databaseReducer(
         }
         return Object.assign({}, state, {
           item: item,
-          view: "DATABASE_SYMBOL",
+          view: "DATABASE_GRAPH",
         });
       } else {
         return state;
@@ -124,6 +125,17 @@ export default function databaseReducer(
         return state;
       }
     }
+
+    case "DATABASE_INITIALIZE_TECHNICAL_INDICATORS": {
+      return {
+        ...state,
+        item: {
+          ...state.item,
+          technicalIndicators: action.payload,
+        },
+      };
+    }
+
     case "DATABASE_CANCEL_ITEM": {
       const clone = Object.assign({}, state, {
         item: {},
