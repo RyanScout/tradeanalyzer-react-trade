@@ -136,6 +136,24 @@ export default function databaseReducer(
       };
     }
 
+    case "DATABASE_INITIALIZE_SNAPSHOTS": {
+      return {
+        ...state,
+        item: {
+          ...state.item,
+          snapshots: action.payload,
+        },
+      };
+    }
+
+    case "DATABASE_SNAPSHOT_VIEW": {
+      return {
+        ...state,
+        view: "DATABASE_SNAPSHOT",
+        item: action.payload,
+      };
+    }
+
     case "DATABASE_CANCEL_ITEM": {
       const clone = Object.assign({}, state, {
         item: {},

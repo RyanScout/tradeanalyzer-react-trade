@@ -8,6 +8,8 @@ import DatabaseSymbolView from "../../../memberView/trade/database/database-deta
 import DatabaseView from "../../../memberView/trade/database/database-view";
 import DatabaseGraphView from "../../../memberView/trade/database/database-graph-view";
 import { createSnapshot } from "./actions/createSnapshot";
+import DatabaseSnapshotView from "../../../memberView/trade/database/database-snapshot-view";
+import { snapshotView } from "./actions/snapshotView";
 
 function DatabaseContainer() {
   const databaseState = useSelector((state: any) => state.database);
@@ -40,6 +42,9 @@ function DatabaseContainer() {
         return true;
       case "DETAIL_VIEW":
         dispatch(actions.databaseDetailView(item));
+        return true;
+      case "SNAPSHOT_VIEW":
+        dispatch(snapshotView(item));
         return true;
       case "MODIFY_VIEW":
         dispatch(actions.databaseModifyView(item));
@@ -88,6 +93,15 @@ function DatabaseContainer() {
           itemState={databaseState}
           inputChange={inputChange}
           manuallyInputChange={manuallyInputChange}
+        />
+      );
+    }
+    case "DATABASE_SNAPSHOT": {
+      return (
+        <DatabaseSnapshotView
+          onOption={onOption}
+          itemState={databaseState}
+          inputChange={inputChange}
         />
       );
     }

@@ -1,9 +1,6 @@
 import { getHost } from "../../../../App";
-import { list } from "../database-actions";
 
-
-
-export function createSnapshot(item: any) {
+export function snapshotView(item) {
   type RequestParams = {
     action?: string;
     service?: string;
@@ -11,20 +8,18 @@ export function createSnapshot(item: any) {
     startTime?: number;
     endTime?: number;
   };
-  
+
   type Params = {
     requestParams?: RequestParams;
     URI?: string;
     auth?: string;
   };
-  
+
   return function (dispatch: any) {
     const requestParams: RequestParams = {
-      action: "CREATE_SNAPSHOT",
+      action: "INITIALIZE_SNAPSHOTS",
       service: "TA_CACHE_SVC",
       itemId: item.id,
-      startTime: Math.round(new Date().getTime() / 1000) - 60 * 60 * 24 * 150,
-      endTime: Math.round(new Date().getTime() / 1000),
     };
 
     const params: Params = {
@@ -57,7 +52,13 @@ export function createSnapshot(item: any) {
           responseJson.status != null &&
           responseJson.status == "SUCCESS"
         ) {
-          dispatch(list());
+          const snapshots = responseJson.params.items;
+          dispatch({ type: "DATABASE_SNAPSHOT_VIEW", payload: item });
+
+          dispatch({
+            type: "DATABASE_INITIALIZE_SNAPSHOTS",
+            payload: snapshots,
+          });
         } else if (responseJson != null && responseJson.status != null) {
           alert(responseJson.status);
           dispatch({ type: "SHOW_STATUS", error: responseJson.errors });
