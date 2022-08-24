@@ -1,6 +1,3 @@
-import { zhCN } from "date-fns/locale";
-import { bindActionCreators } from "redux";
-
 type DefaultItemState = {
   item?: any;
   evaluationPeriod?: string;
