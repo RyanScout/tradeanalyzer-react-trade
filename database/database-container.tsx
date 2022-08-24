@@ -7,6 +7,7 @@ import DatabaseModifyView from "../../../memberView/trade/database/database-modi
 import DatabaseSymbolView from "../../../memberView/trade/database/database-detail-view";
 import DatabaseView from "../../../memberView/trade/database/database-view";
 import DatabaseGraphView from "../../../memberView/trade/database/database-graph-view";
+import { createSnapshot } from "./actions/createSnapshot";
 
 function DatabaseContainer() {
   const databaseState = useSelector((state: any) => state.database);
@@ -42,6 +43,9 @@ function DatabaseContainer() {
         return true;
       case "MODIFY_VIEW":
         dispatch(actions.databaseModifyView(item));
+        return true;
+      case "CREATE_SNAPSHOT":
+        dispatch(createSnapshot(item));
         return true;
       case "CANCEL": {
         dispatch(actions.cancelItem());
