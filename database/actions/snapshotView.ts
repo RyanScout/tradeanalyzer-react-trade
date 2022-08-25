@@ -17,7 +17,7 @@ export function snapshotView(item) {
 
   return function (dispatch: any) {
     const requestParams: RequestParams = {
-      action: "INITIALIZE_SNAPSHOTS",
+      action: "GET_SNAPSHOTS",
       service: "TA_CACHE_SVC",
       itemId: item.id,
     };
