@@ -1,30 +1,34 @@
 import { getHost } from "../../../../App";
 import { list } from "../database-actions";
 
+type RequestParams = {
+  action: string;
+  service: string;
+  itemId: number;
+  startTime: number;
+  endTime: number;
+};
 
+type Params = {
+  requestParams: RequestParams;
+  URI: string;
+  auth?: string;
+};
 
-export function createSnapshot(item: any) {
-  type RequestParams = {
-    action?: string;
-    service?: string;
-    itemId?: number;
-    startTime?: number;
-    endTime?: number;
-  };
-  
-  type Params = {
-    requestParams?: RequestParams;
-    URI?: string;
-    auth?: string;
-  };
-  
+type Snapshot = {
+  id: number;
+  firstCheck: number;
+  lastCheck: number;
+};
+
+export function modifySnapshot(snapshot: Snapshot) {
   return function (dispatch: any) {
     const requestParams: RequestParams = {
-      action: "CREATE_SNAPSHOT",
+      action: "MODIFY_SNAPSHOT",
       service: "TA_CACHE_SVC",
-      itemId: item.id,
-      startTime: Math.round(new Date().getTime() / 1000) - 60 * 60 * 24 * 150,
-      endTime: Math.round(new Date().getTime() / 1000),
+      itemId: snapshot.id,
+      startTime: snapshot.firstCheck,
+      endTime: snapshot.lastCheck,
     };
 
     const params: Params = {

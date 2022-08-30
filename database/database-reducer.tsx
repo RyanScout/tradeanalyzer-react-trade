@@ -31,10 +31,7 @@ const defaultAction: DefaultAction = {
   params: {},
 };
 
-export default function databaseReducer(
-  state: any = {},
-  action: DefaultAction = defaultAction
-) {
+export default function databaseReducer(state: any = {}, action: any = {}) {
   switch (action.type) {
     case "DATABASE_BACKLOAD": {
       return state;
@@ -143,11 +140,39 @@ export default function databaseReducer(
       };
     }
 
+    case "DATABASE_CHANGE_ITEM": {
+      return {
+        ...state,
+        item: action.payload,
+      };
+    }
+
     case "DATABASE_SNAPSHOT_VIEW": {
       return {
         ...state,
         view: "DATABASE_SNAPSHOT",
-        item: action.payload,
+      };
+    }
+
+    case "MODIFY_SNAPSHOT": {
+      const id = action.payload.id;
+      const startTime = action.payload.startTime;
+      const endTime = action.payload.endTime;
+
+      return {
+        ...state,
+        item: {
+          ...state.item,
+          snapshots: state.item.snapshots.map((snapshot) => {
+            if (snapshot.id === id) {
+              return {
+                ...snapshot,
+                firstCheck: startTime,
+                lastCheck: endTime,
+              };
+            } else return snapshot;
+          }),
+        },
       };
     }
 

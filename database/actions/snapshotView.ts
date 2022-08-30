@@ -53,12 +53,12 @@ export function snapshotView(item) {
           responseJson.status == "SUCCESS"
         ) {
           const snapshots = responseJson.params.items;
-          dispatch({ type: "DATABASE_SNAPSHOT_VIEW", payload: item });
-
+          dispatch({ type: "DATABASE_CHANGE_ITEM", payload: item });
           dispatch({
             type: "DATABASE_INITIALIZE_SNAPSHOTS",
             payload: snapshots,
           });
+          dispatch({ type: "DATABASE_SNAPSHOT_VIEW" });
         } else if (responseJson != null && responseJson.status != null) {
           alert(responseJson.status);
           dispatch({ type: "SHOW_STATUS", error: responseJson.errors });

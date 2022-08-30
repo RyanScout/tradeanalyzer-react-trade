@@ -7,7 +7,7 @@ import DatabaseModifyView from "../../../memberView/trade/database/database-modi
 import DatabaseSymbolView from "../../../memberView/trade/database/database-detail-view";
 import DatabaseView from "../../../memberView/trade/database/database-view";
 import DatabaseGraphView from "../../../memberView/trade/database/database-graph-view";
-import { createSnapshot } from "./actions/createSnapshot";
+import { modifySnapshot } from "./actions/modifySnapshot";
 import DatabaseSnapshotView from "../../../memberView/trade/database/database-snapshot-view";
 import { snapshotView } from "./actions/snapshotView";
 
@@ -49,8 +49,8 @@ function DatabaseContainer() {
       case "MODIFY_VIEW":
         dispatch(actions.databaseModifyView(item));
         return true;
-      case "CREATE_SNAPSHOT":
-        dispatch(createSnapshot(item));
+      case "MODIFY_SNAPSHOT":
+        dispatch(modifySnapshot(item));
         return true;
       case "CANCEL": {
         dispatch(actions.cancelItem());
@@ -77,8 +77,12 @@ function DatabaseContainer() {
     }
   }
 
-  function manuallyInputChange(field, value) {
+  function manuallyInputChange(field: string, value: any) {
     dispatch(actions.inputChange(field, value));
+  }
+
+  function buildThunk(object: any) {
+    dispatch(object);
   }
 
   if (databaseState === null || databaseState === undefined) {
@@ -101,7 +105,8 @@ function DatabaseContainer() {
         <DatabaseSnapshotView
           onOption={onOption}
           itemState={databaseState}
-          inputChange={inputChange}
+          inputChange={manuallyInputChange}
+          buildThunk={buildThunk}
         />
       );
     }
