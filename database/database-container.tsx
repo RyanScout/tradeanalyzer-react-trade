@@ -10,6 +10,7 @@ import DatabaseGraphView from "../../../memberView/trade/database/database-graph
 import { modifySnapshot } from "./actions/modifySnapshot";
 import DatabaseSnapshotView from "../../../memberView/trade/database/database-snapshot-view";
 import { snapshotView } from "./actions/snapshotView";
+import { snapshotGraphView } from "./actions/snapshotGraphView";
 
 function DatabaseContainer() {
   const databaseState = useSelector((state: any) => state.database);
@@ -39,6 +40,9 @@ function DatabaseContainer() {
         return true;
       case "GRAPH_VIEW":
         dispatch(actions.databaseGraphView(item));
+        return true;
+      case "SNAPSHOT_GRAPH_VIEW":
+        dispatch(snapshotGraphView(item));
         return true;
       case "DETAIL_VIEW":
         dispatch(actions.databaseDetailView(item));

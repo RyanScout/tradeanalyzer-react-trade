@@ -140,6 +140,27 @@ export default function databaseReducer(state: any = {}, action: any = {}) {
       };
     }
 
+    case "DATABASE_INITIALIZE_SNAPSHOT_DETAILS": {
+      return {
+        ...state,
+        item: {
+          ...state.item,
+          effectiveDetails: action.payload,
+        },
+      };
+    }
+
+    case "DATABASE_SNAPSHOT_GRAPH": {
+      return {
+        ...state,
+        item: {
+          ...action.payload.snapshot,
+          effectiveDetails: action.payload.details,
+        },
+        view: "DATABASE_GRAPH",
+      };
+    }
+
     case "DATABASE_CHANGE_ITEM": {
       return {
         ...state,
