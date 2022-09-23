@@ -77,7 +77,11 @@ export function getCustomTechnicalIndicators() {
         }
       })
       .then((responseJson) => {
-        dispatch({ type: "TRADE_CUSTOM_TECHNICAL_INDICATORS", responseJson });
+        const customTechnicalIndicators = responseJson.params.items;
+        dispatch({
+          type: "TRADE_CUSTOM_TECHNICAL_INDICATORS",
+          payload: customTechnicalIndicators,
+        });
         if (info != null) {
           dispatch({ type: "SHOW_STATUS", info: info });
         }
@@ -92,6 +96,21 @@ export function cancelItem() {
   };
 }
 
+export function selectView(field) {
+  return function (dispatch) {
+    dispatch({ type: "TRADE_SELECT_VIEW", action: field });
+  };
+}
+
+export function selectInputChange(field, value) {
+  return function (dispatch) {
+    let params = {};
+    params.field = field;
+    params.value = value;
+    dispatch({ type: "TRADE_SELECT_INPUT_CHANGE", params });
+  };
+}
+
 export function modifyItem(item) {
   return function (dispatch) {
     dispatch({ type: "TRADE_MODIFY_ITEM", action: item });
@@ -103,16 +122,99 @@ export function historicalAnalysisView(item) {
     dispatch({ type: "TRADE_HISTORICAL_ANALYSIS_VIEW", action: item });
   };
 }
-
 export function tradeDetailView(item) {
   return function (dispatch) {
-    dispatch({ type: "TRADE_DETAIL_VIEW", action: item });
+    let params = {};
+    params.requestParams = {};
+    params.requestParams.action = "GET_TRADE_DETAILS";
+    params.requestParams.service = "TA_TRADE_SVC";
+    params.requestParams.itemId = item.id;
+
+    params.URI = "/api/member/callService";
+
+    const uri = getHost() + params.URI;
+    let headers = new Headers();
+    headers.set("Content-type", "application/json");
+    if (params.auth != null) {
+      headers.set("Authorization", "Basic " + params.auth);
+    }
+    fetch(uri, {
+      method: "POST",
+      credentials: "same-origin",
+      headers: headers,
+      body: JSON.stringify({ params: params.requestParams }),
+    })
+      .then(function (response) {
+        if (response.status >= 400) {
+          let responseMsg = { status: "ERROR", protocalError: response.status };
+        } else {
+          return response.json();
+        }
+      })
+      .then((responseJson) => {
+        if (
+          responseJson != null &&
+          responseJson.status != null &&
+          responseJson.status == "SUCCESS"
+        ) {
+          dispatch({ type: "TRADE_DETAIL_VIEW", action: item });
+          dispatch({ type: "INITIALIZE_TRADE_DETAILS", action: responseJson });
+        } else if (responseJson != null && responseJson.status != null) {
+          alert(responseJson.status);
+          dispatch({ type: "SHOW_STATUS", error: responseJson.errors });
+        }
+      })
+      .catch(function (error) {});
   };
 }
 
 export function tradeGraphView(item) {
   return function (dispatch) {
-    dispatch({ type: "TRADE_GRAPH_VIEW", action: item });
+    let params = {};
+    params.requestParams = {};
+    params.requestParams.action = "GET_GRAPH_DATA";
+    params.requestParams.service = "TA_TRADE_SVC";
+    params.requestParams.itemId = item.id;
+
+    params.URI = "/api/member/callService";
+
+    const uri = getHost() + params.URI;
+    let headers = new Headers();
+    headers.set("Content-type", "application/json");
+    if (params.auth != null) {
+      headers.set("Authorization", "Basic " + params.auth);
+    }
+    fetch(uri, {
+      method: "POST",
+      credentials: "same-origin",
+      headers: headers,
+      body: JSON.stringify({ params: params.requestParams }),
+    })
+      .then(function (response) {
+        if (response.status >= 400) {
+          let responseMsg = { status: "ERROR", protocalError: response.status };
+        } else {
+          return response.json();
+        }
+      })
+      .then((responseJson) => {
+        if (
+          responseJson != null &&
+          responseJson.status != null &&
+          responseJson.status == "SUCCESS"
+        ) {
+          dispatch({ type: "TRADE_GRAPH_VIEW", action: item });
+          dispatch({ type: "INITIALIZE_TRADE_DETAILS", action: responseJson });
+          dispatch({
+            type: "INITIALIZE_TRADE_SYMBOL_DATA",
+            action: responseJson,
+          });
+        } else if (responseJson != null && responseJson.status != null) {
+          alert(responseJson.status);
+          dispatch({ type: "SHOW_STATUS", error: responseJson.errors });
+        }
+      })
+      .catch(function (error) {});
   };
 }
 
@@ -208,7 +310,7 @@ export function resetItem(item) {
   return function (dispatch) {
     let params = {};
     params.requestParams = {};
-    params.requestParams.action = "RESET";
+    params.requestParams.action = "RESET_TRADE";
     params.requestParams.service = "TA_TRADE_SVC";
     params.requestParams.itemId = item.id;
 
@@ -240,11 +342,8 @@ export function resetItem(item) {
           responseJson.status == "SUCCESS"
         ) {
           dispatch(list());
-        } else if (
-          responseJson != null &&
-          responseJson.status != null &&
-          responseJson.status == "ACTIONFAILED"
-        ) {
+        } else if (responseJson != null && responseJson.status != null) {
+          alert(responseJson.status);
           dispatch({ type: "SHOW_STATUS", error: responseJson.errors });
         }
       })
@@ -301,8 +400,8 @@ export function historicallyAnalyzeSwingTrade(item) {
   return function (dispatch) {
     let params = {};
     params.requestParams = {};
-    params.requestParams.action = "HISTORICALLY_ANALYZE_SWING_TRADE";
-    params.requestParams.service = "TA_HISTORICALLY_ANALYZE_SVC";
+    params.requestParams.action = "HISTORICAL_ANALYSIS";
+    params.requestParams.service = "TA_TRADE_SVC";
     params.requestParams.item = item;
 
     params.URI = "/api/member/callService";
@@ -327,7 +426,16 @@ export function historicallyAnalyzeSwingTrade(item) {
         }
       })
       .then((responseJson) => {
-        dispatch(list());
+        if (
+          responseJson != null &&
+          responseJson.status != null &&
+          responseJson.status == "SUCCESS"
+        ) {
+          dispatch(list());
+        } else if (responseJson != null && responseJson.status != null) {
+          alert(responseJson.status);
+          dispatch({ type: "SHOW_STATUS", error: responseJson.errors });
+        }
       })
       .catch(function (error) {});
   };
